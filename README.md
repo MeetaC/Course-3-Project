@@ -45,7 +45,7 @@ setwd("C:/xxxxxxxxxxxxxx/Data Science Specialization/Course 3- Getting and Clean
 dir.create("Data")
 dir.exists("./Data")
 
-2- Download, unzip and save file in above created directory
+2- Download, unzip and save file in above created directory.
 
 if (!file.exists("Data/UCI HAR Dataset")) {
    fileURL <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
@@ -55,13 +55,17 @@ if (!file.exists("Data/UCI HAR Dataset")) {
   unzip(zipfile, exdir="Data")
 }
 
-3- Read, Label, Merge Datasets
+3- Read, Label, Merge Datasets. 
+
 
   a-Read all the datasets into R.
+  
   b-Label them appropriately. The labels for training and test files are in the file called features.txt. Important to merge the files        at this raw stage so that the columns are merged accurately. The activity file and the subject files are named accordingly on the        single column on these file. This step also achieves step 4 of the Aim of the project. i.e. appropriately labels the dataset.
+  
   c-Merge Datasets- First merge by columns the training and test data sets separately with the activity and subject files. This is again    required for accurate subject and activity mapping. Finally set together the training and test file to get the final file.
   
-  Read 
+  Read. 
+  
   training.x <- read.table("data/UCI HAR Dataset/train/X_train.txt")
   training.y <- read.table("data/UCI HAR Dataset/train/y_train.txt")
   training.subject <- read.table("data/UCI HAR Dataset/train/subject_train.txt")
@@ -71,7 +75,8 @@ if (!file.exists("Data/UCI HAR Dataset")) {
   activity_labels <- read.table("data/UCI HAR Dataset/activity_labels.txt")
   features <- read.table("data/UCI HAR Dataset/features.txt")  
   
-  Labeling
+  Labeling.
+  
   names(training.y) <-"activity"
   names(test.y) <-"activity"
   names(training.subject) <-"subject"
@@ -79,7 +84,8 @@ if (!file.exists("Data/UCI HAR Dataset")) {
   names (test.x) <- features[ ,2]
   names (training.x) <- features[ ,2]
   
-  Merge
+  Merge.
+  
   merged.training <- cbind(training.subject,training.y, training.x)
   merged.test<- cbind(test.subject, test.y, test.x)
   merge.all <-rbind(merged.training, merged.test)
@@ -87,7 +93,7 @@ if (!file.exists("Data/UCI HAR Dataset")) {
 
 
 4- Extract measurement on only mean and standard deviation. Also ensure that activity and subject fields are included in the file.
-  
+
   meanstdcols <- grepl("mean\\(\\)", names(merge.all)) |grepl("std\\(\\)", names(merge.all))
   meanstdcols[1:2] <- TRUE
   merge.all <- merge.all[, meanstdcols]
@@ -102,6 +108,7 @@ if (!file.exists("Data/UCI HAR Dataset")) {
   
   
 6- Labeling done in step 1.
+
 
 7- Creates a second, independent tidy data set with the average of each variable for each activity and each subject. Code uses reshape2 package with the melt option to transpose the data into a tall dataset with the classified per subject, activity and various column names. The dcast option is then used to group and calculate averages for each of the column variable type by subject and activity. This final dataset is called 'tidy'.
 
